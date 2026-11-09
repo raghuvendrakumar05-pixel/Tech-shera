@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#070b16">
+  <title>TECH SHERA | Video Link Hub</title>
+  <style>
+    :root { --bg:#070b16; --panel:#101a2d; --blue:#22b8ff; --cyan:#62e5ff; --text:#f4f8ff; --muted:#a9b8cf; }
+    * { box-sizing:border-box; }
+    body {
+      margin:0; min-height:100vh; color:var(--text);
+      font-family:Arial,Helvetica,sans-serif;
+      background:radial-gradient(circle at 50% 0%, #12345b 0, #0a1428 35%, var(--bg) 72%);
+      display:flex; flex-direction:column;
+    }
+    header { padding:25px 18px 10px; text-align:center; }
+    .logo {
+      display:inline-flex; align-items:center; gap:10px; font-size:clamp(25px,6vw,38px);
+      font-weight:900; letter-spacing:1.5px;
+    }
+    .tiger { font-size:1.15em; filter:drop-shadow(0 0 12px #22b8ff); }
+    .brand { color:var(--cyan); text-shadow:0 0 18px #168bdc80; }
+    .tagline { margin:9px 0 0; color:var(--muted); font-size:14px; }
+    main { width:min(92%,560px); margin:38px auto; flex:1; }
+    .card {
+      padding:clamp(22px,5vw,34px); border:1px solid #24466d;
+      border-radius:22px; background:linear-gradient(145deg,#12213aee,#0b1425f2);
+      box-shadow:0 18px 55px #0008, inset 0 1px #ffffff12;
+    }
+    h1 { margin:0 0 10px; font-size:clamp(23px,5vw,30px); text-align:center; }
+    .intro { color:var(--muted); line-height:1.55; text-align:center; margin:0 0 24px; font-size:14px; }
+    label { display:block; margin:0 0 9px; font-size:14px; font-weight:700; }
+    input {
+      width:100%; padding:16px; border-radius:12px; border:1px solid #355779;
+      outline:none; color:white; background:#07101f; font-size:15px;
+    }
+    input:focus { border-color:var(--blue); box-shadow:0 0 0 3px #22b8ff20; }
+    button {
+      width:100%; margin-top:13px; padding:15px; border:0; border-radius:12px;
+      color:#03101c; font-size:16px; font-weight:800; cursor:pointer;
+      background:linear-gradient(90deg,var(--blue),var(--cyan));
+    }
+    button:hover { filter:brightness(1.08); }
+    .hint { color:var(--muted); font-size:12px; line-height:1.5; margin:13px 2px 0; }
+    .status { min-height:22px; margin-top:14px; font-size:13px; line-height:1.5; color:#ffd68a; }
+    .features { display:grid; grid-template-columns:repeat(3,1fr); gap:9px; margin-top:18px; }
+    .feature { background:#0a1424; border:1px solid #1e3858; border-radius:12px; padding:12px 6px; text-align:center; color:#c9d9ee; font-size:12px; }
+    .feature span { display:block; font-size:20px; margin-bottom:6px; }
+    footer { padding:18px; text-align:center; color:#8496b0; font-size:12px; }
+    footer strong { color:var(--cyan); }
+    a { color:var(--cyan); }
+    @media(max-width:390px) { .features { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo"><span class="tiger">🐯</span><span>TECH <span class="brand">SHERA</span></span></div>
+    <p class="tagline">Simple • Fast • Mobile Friendly</p>
+  </header>
+
+  <main>
+    <section class="card">
+      <h1>Video Link Hub</h1>
+      <p class="intro">Apne video ka direct link paste karein. Apne ya permission wale videos hi use karein.</p>
+      <form id="videoForm">
+        <label for="videoUrl">Paste direct video URL</label>
+        <input id="videoUrl" type="url" placeholder="https://example.com/my-video.mp4" required>
+        <button type="submit">OPEN VIDEO ↗</button>
+        <div class="status" id="status" role="status" aria-live="polite"></div>
+      </form>
+      <p class="hint">Note: Instagram/Facebook post links ko yeh demo page download nahi karta. Social platforms ke links ke liye unke official Save/Download options ya creator ki permission use karein. Direct video URLs (jaise .mp4) browser mein khul sakte hain; download option hosting site aur browser par depend karta hai.</p>
+      <div class="features">
+        <div class="feature"><span>🔗</span>Easy Link</div>
+        <div class="feature"><span>📱</span>Mobile Ready</div>
+        <div class="feature"><span>⚡</span>Quick Access</div>
+      </div>
+    </section>
+  </main>
+
+  <footer>Made with ⚡ by <strong>TECH SHERA</strong></footer>
+
+  <script>
+    const form = document.getElementById('videoForm');
+    const input = document.getElementById('videoUrl');
+    const status = document.getElementById('status');
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      let url;
+      try {
+        url = new URL(input.value.trim());
+      } catch {
+        status.textContent = 'Please enter a valid video URL.';
+        return;
+      }
+      if (!['http:', 'https:'].includes(url.protocol)) {
+        status.textContent = 'Only http or https links are allowed.';
+        return;
+      }
+      const ext = url.pathname.toLowerCase();
+      if (!/\.(mp4|webm|mov|m4v|ogv)$/.test(ext)) {
+        status.textContent = 'This looks like a webpage link, not a direct video file. This demo supports direct video-file links only.';
+        return;
+      }
+      status.textContent = 'Opening your video in a new tab…';
+      window.open(url.href, '_blank', 'noopener,noreferrer');
+    });
+  </script>
+</body>
+</html>
